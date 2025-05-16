@@ -1,0 +1,54 @@
+{
+    "es_properties": {
+        "suffix_pattern": "(_s_srcha|_dt_srcha)$",
+        "phone_number_search": "phoneNumber_s_srcha",
+        "relation_id_search": "relation_id"
+    },
+    "es_relation_properties": {
+        "relation_type": "relationType",
+        "relation_id": "relationId",
+        "from_entity": "fromEntity",
+        "to_entity": "toEntity",
+        "from_entity_type": "fromEntityType",
+        "to_entity_type": "toEntityType",
+        "from_source": "fromSource",
+        "to_source": "toSource",
+        "from_datasource": "fromDatasource",
+        "to_datasource": "toDatasource",
+        "create_user": "createUser"
+    },
+    "es_phone_properties": {
+        "phone_number": "phoneNumber",
+        "total_calls": "totalCalls",
+        "call_from_rate": "callFromRate",
+        "avg_duration_from": "avgDurationFrom",
+        "avg_duration_to": "avgDurationTo"
+    },
+    "message_fields": {
+        "phone_a": "phoneA",
+        "phone_b": "phoneB",
+        "log_agg": "logAgg",
+        "meta_a": "metaA",
+        "meta_b": "metaB"
+    },
+    "message_phone_metadata": {
+        "total_calls": "totalCalls",
+        "call_from_rate": "callFromRate",
+        "avg_duration_from": "avgDurationFrom",
+        "avg_duration_to": "avgDurationTo"
+    },
+    "message_phone_agg": {
+        "total_calls": "totalCalls",
+        "call_from_rate": "callFromRate",
+        "max_duration": "maxDuration",
+        "total_duration": "totalDuration",
+        "avg_days": "avgDays"
+    },
+    "clickhouse_properties": {
+        "phone_a": "a_sub",
+        "phone_b": "b_sub",
+        "start_time": "start",
+        "duration": "duration",
+        "call_type": "call_type"
+    }
+}

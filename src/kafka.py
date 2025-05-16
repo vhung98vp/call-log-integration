@@ -5,8 +5,8 @@ from concurrent.futures import ThreadPoolExecutor
 from confluent_kafka import Consumer, Producer
 from .elasticsearch import query_phone_entity, query_relation
 from .clickhouse import query_clickhouse
-from .utlis import check_relation_by_agg, check_relation_by_old_logs, build_output_message
-from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MAX_WORKERS
+from .utlis import check_relation_by_agg, check_relation_by_old_logs, build_output_message, map_metadata
+from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MAX_WORKERS, MES_FIELD
 
 producer = Producer(KAFKA_PRODUCER_CONFIG)
 consumer = Consumer(KAFKA_CONSUMER_CONFIG)
@@ -19,14 +19,16 @@ def process_message(msg_key, msg):
     start_time = time.time()
     try:
         data = json.loads(msg)
-        phone_a = data.get('phoneA')
-        phone_b = data.get('phoneB')
-        log_agg = data.get('logAgg')
-        metadata_A = data.get('metaA')
-        metadata_B = data.get('metaB')
-        if any(not data[key] for key in ['phoneA', 'phoneB', 'logAgg', 'metaA', 'metaB']):
+        phone_a = data.get(MES_FIELD['phone_a'])
+        phone_b = data.get(MES_FIELD['phone_b'])
+        log_agg = data.get(MES_FIELD['log_agg'])
+        metadata_A = data.get(MES_FIELD['meta_a'])
+        metadata_B = data.get(MES_FIELD['meta_b'])
+        if any(not data.get(key) for key in MES_FIELD.values()):
             logger.warning(f"Invalid message data: {msg}")
             return
+        metadata_A = map_metadata(metadata_A)
+        metadata_B = map_metadata(metadata_B)
 
         logger.info(f"Processing Kafka message for {phone_a}-{phone_b}...")
 
@@ -70,10 +72,10 @@ def start_kafka_consumer():
         while True:
             msg = consumer.poll(KAFKA['consumer_timeout'])
             if msg is None or msg.error():
-                if msg.error():
-                    logger.error(f"Message error: {msg.error()}")
-                else:
+                if msg is None:
                     logger.info("Waiting for messages...")
+                else:
+                    logger.error(f"Message error: {msg.error()}")
                 continue
             try:
                 message = msg.value().decode("utf-8")

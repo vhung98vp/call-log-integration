@@ -1,6 +1,6 @@
 import requests
 import re
-from config import ES, ES_PROPERTY_SR, ES_PROPERTY_PH, logger
+from .config import ES, ES_PROPERTY, ES_PHONE_PROPERTY, logger
 from .utlis import build_relation_id
 
 
@@ -13,7 +13,7 @@ def query_relation(phone_a, phone_b):
     query = {
         "query": {
             "terms": {
-                f"{ES_PROPERTY_SR['relation_id_search']}.keyword": [relation_id_1, relation_id_2]
+                f"{ES_PROPERTY['relation_id_search']}.keyword": [relation_id_1, relation_id_2]
             }
         }
     }
@@ -24,7 +24,7 @@ def query_relation(phone_a, phone_b):
                                     json=query)
         response.raise_for_status()
         response_hits = response.json()['hits']['hits']
-        return response_hits[0]['_source'][ES_PROPERTY_SR['relation_id_search']] if response_hits else None
+        return response_hits[0]['_source'][ES_PROPERTY['relation_id_search']] if response_hits else None
     except Exception as e:
         logger.error(f"Error querying Elasticsearch: {e}")
         return None
@@ -36,7 +36,7 @@ def query_phone_entity(phone_a, phone_b):
     query = {
         "query": {
             "terms": {
-                f"properties.{ES_PROPERTY_SR['phone_number_search']}.keyword": [phone_a, phone_b]
+                f"properties.{ES_PROPERTY['phone_number_search']}.keyword": [phone_a, phone_b]
             }
         }
     }
@@ -52,9 +52,9 @@ def query_phone_entity(phone_a, phone_b):
             return None, None
         for hit in response_hits:
             hit_properties = transform_properties(hit['_source']['properties'])
-            if hit_properties[ES_PROPERTY_PH['phone_number']] == phone_a:
+            if hit_properties[ES_PHONE_PROPERTY['phone_number']] == phone_a:
                 meta_A = hit_properties
-            elif hit_properties[ES_PROPERTY_PH['phone_number']] == phone_b:
+            elif hit_properties[ES_PHONE_PROPERTY['phone_number']] == phone_b:
                 meta_B = hit_properties
         return meta_A, meta_B
     except Exception as e:
@@ -66,8 +66,8 @@ def transform_properties(properties):
     for key, value in properties.items():
         if isinstance(value, list) and len(value) == 1:
             value = value[0]
-        if ES['suffix_pattern']:
+        if ES_PROPERTY['suffix_pattern']:
             key = re.sub(ES['suffix_pattern'], '', key)
-        if key in ES_PROPERTY_PH:
+        if key in ES_PHONE_PROPERTY:
             normal_dict[key] = value
     return normal_dict

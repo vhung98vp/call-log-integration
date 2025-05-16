@@ -1,5 +1,5 @@
 import requests
-from config import CLICKHOUSE, CH_PROPERTY, logger
+from .config import CLICKHOUSE, CH_PROPERTY, logger
 
 def query_clickhouse(phone_a, phone_b):
     try: # Convert phone numbers to integers for clickhouse query
