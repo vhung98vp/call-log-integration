@@ -15,16 +15,13 @@ This project is designed to check call log and integrate relation data into the 
 - `KAFKA_INPUT_TOPIC`: Kafka topic for input messages
 - `KAFKA_OUTPUT_TOPIC`: Kafka topic for output messages
 - `KAFKA_ERROR_TOPIC`: Kafka topic for error messages
-- `KAFKA_RELATION_TYPE`: Type of relation to be used in output
-- `KAFKA_ENTITY_TYPE`: Entity type for Kafka messages
-- `KAFKA_ENTITY_SOURCE`: Source identifier for entities
-- `KAFKA_ENTITY_DATASOURCE`: Data source identifier for entities
-- `KAFKA_ES_CREATE_USER`: User ID for creating Elasticsearch entries
 - `ES_URL`: URL of the Elasticsearch instance
 - `ES_USER`: Elasticsearch username
 - `ES_PASSWORD`: Elasticsearch password
 - `ES_PHONE_INDEX`: Name of the Elasticsearch index for phone profile
 - `ES_RELATION_INDEX`: Name of the Elasticsearch index for relations
+- `ES_VALUE_*`: Value for Elasticsearch write data
+- `ES_PROPERTY_*`: Name of the Elasticsearch properties
 - `CLICKHOUSE_URL`: ClickHouse database URL
 - `CLICKHOUSE_TABLE`: ClickHouse table name
 - `THRESHOLD_TOTAL_DURATION`: Threshold for total call duration

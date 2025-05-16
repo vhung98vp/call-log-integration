@@ -1,19 +1,19 @@
 import requests
-import uuid
-from config import ES, KAFKA, logger
+import re
+from config import ES, ES_PROPERTY_SR, ES_PROPERTY_PH, logger
+from .utlis import build_relation_id
 
 
 def query_relation(phone_a, phone_b):
-    relation_type = KAFKA['relation_type']
-    relation_id_1 = str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{relation_type}:{phone_a}:{phone_b}"))
-    relation_id_2 = str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{relation_type}:{phone_a}:{phone_b}"))
+    relation_id_1 = build_relation_id(phone_a, phone_b)
+    relation_id_2 = build_relation_id(phone_b, phone_a)
     url = f"http://{ES['url']}/{ES['relation_index']}/_search"
     auth = (ES['user'], ES['password']) if ES['user'] and ES['password'] else None
     headers = {'Content-Type': 'application/json'}
     query = {
         "query": {
             "terms": {
-                "properties.relation_id.keyword": [relation_id_1, relation_id_2]
+                f"{ES_PROPERTY_SR['relation_id_search']}.keyword": [relation_id_1, relation_id_2]
             }
         }
     }
@@ -24,7 +24,7 @@ def query_relation(phone_a, phone_b):
                                     json=query)
         response.raise_for_status()
         response_hits = response.json()['hits']['hits']
-        return response_hits[0]['_source'] if response_hits else None
+        return response_hits[0]['_source'][ES_PROPERTY_SR['relation_id_search']] if response_hits else None
     except Exception as e:
         logger.error(f"Error querying Elasticsearch: {e}")
         return None
@@ -36,7 +36,7 @@ def query_phone_entity(phone_a, phone_b):
     query = {
         "query": {
             "terms": {
-                "properties.phone_number.keyword": [phone_a, phone_b]
+                f"properties.{ES_PROPERTY_SR['phone_number_search']}.keyword": [phone_a, phone_b]
             }
         }
     }
@@ -51,11 +51,23 @@ def query_phone_entity(phone_a, phone_b):
             logger.warning(f"No phone entity found for {phone_a} or {phone_b}")
             return None, None
         for hit in response_hits:
-            if hit['_source']['properties']['phone_number'] == phone_a:
-                meta_A = hit['_source']
-            elif hit['_source']['properties']['phone_number'] == phone_b:
-                meta_B = hit['_source']
+            hit_properties = transform_properties(hit['_source']['properties'])
+            if hit_properties[ES_PROPERTY_PH['phone_number']] == phone_a:
+                meta_A = hit_properties
+            elif hit_properties[ES_PROPERTY_PH['phone_number']] == phone_b:
+                meta_B = hit_properties
         return meta_A, meta_B
     except Exception as e:
         logger.error(f"Error querying Elasticsearch: {e}")
         return None
+
+def transform_properties(properties):
+    normal_dict = {}
+    for key, value in properties.items():
+        if isinstance(value, list) and len(value) == 1:
+            value = value[0]
+        if ES['suffix_pattern']:
+            key = re.sub(ES['suffix_pattern'], '', key)
+        if key in ES_PROPERTY_PH:
+            normal_dict[key] = value
+    return normal_dict
