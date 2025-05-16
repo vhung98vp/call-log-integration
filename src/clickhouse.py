@@ -2,15 +2,22 @@ import requests
 from config import CLICKHOUSE, CH_PROPERTY, logger
 
 def query_clickhouse(phone_a, phone_b):
+    try: # Convert phone numbers to integers for clickhouse query
+        phone_a = int(phone_a)
+        phone_b = int(phone_b)
+    except ValueError:
+        logger.error(f"Invalid phone numbers: {phone_a}, {phone_b}")
+        return None
+
     query = f"""
         SELECT ({CH_PROPERTY['duration']}, ({CH_PROPERTY['start_time']}, ({CH_PROPERTY['call_type']}
         FROM {CLICKHOUSE['table']}
         WHERE ({CH_PROPERTY['phone_a']} = '{phone_a}' AND {CH_PROPERTY['phone_b']} = '{phone_b}') 
                 OR ({CH_PROPERTY['phone_a']} = '{phone_b}' AND {CH_PROPERTY['phone_b']} = '{phone_a}')
     """
-    data = {'query': query}
+
     try:
-        response = requests.post(CLICKHOUSE['url'], data=data)
+        response = requests.post(CLICKHOUSE['url'], data={'query': query})
         response.raise_for_status()
         old_logs = response.text.strip().split('\n')
         logger.info(f"{phone_a}-{phone_b}: Received {len(old_logs)} call logs from ClickHouse.")
