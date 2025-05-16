@@ -10,7 +10,7 @@ def query_clickhouse(phone_a, phone_b):
         return None
 
     query = f"""
-        SELECT ({CH_PROPERTY['duration']}, ({CH_PROPERTY['start_time']}, ({CH_PROPERTY['call_type']}
+        SELECT {CH_PROPERTY['duration']}, {CH_PROPERTY['start_time']}, {CH_PROPERTY['call_type']}
         FROM {CLICKHOUSE['table']}
         WHERE ({CH_PROPERTY['phone_a']} = '{phone_a}' AND {CH_PROPERTY['phone_b']} = '{phone_b}') 
                 OR ({CH_PROPERTY['phone_a']} = '{phone_b}' AND {CH_PROPERTY['phone_b']} = '{phone_a}')
