@@ -23,7 +23,7 @@ def query_clickhouse(phone_a, phone_b):
         logger.info(f"{phone_a}-{phone_b}: Received {len(old_logs)} call logs from ClickHouse.")
         return agg_logs(old_logs)
     except Exception as e:
-        logger.error(f"Error querying ClickHouse: {e}")
+        logger.error(f"Failed to fetch from Clickhouse: {e}")
         return None
 
 def agg_logs(logs):

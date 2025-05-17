@@ -53,7 +53,7 @@ def process_message(msg_key, msg):
                 send_output_to_kafka(build_output_message(phone_a, phone_b))
                 return
 
-        logger.info(f"Relation not found between {phone_a} and {phone_b}.")
+        logger.info(f"Relation not detected for {phone_a}-{phone_b}.")
 
     except Exception as e:
         logger.exception(f"Error while processing message {msg_key}:{msg}: {e}")

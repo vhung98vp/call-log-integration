@@ -14,7 +14,7 @@ def check_relation_by_agg(log_agg, meta_A, meta_B):
       log_agg[MES_PHONE_AGG['max_duration']] >= THRESHOLDS['max_duration'] or \
       (log_agg[MES_PHONE_AGG['total_calls']] >= THRESHOLDS['total_calls'] and \
         log_agg[MES_PHONE_AGG['avg_days']] >= THRESHOLDS['avg_days']):
-        logger.info("Found relation based on aggregated logs.")
+        logger.info(f"Relation detected by aggregated log")
         return True
 
     log_agg['avg_duration'] = log_agg[MES_PHONE_AGG['total_duration']] / log_agg[MES_PHONE_AGG['total_calls']]
@@ -29,6 +29,7 @@ def check_relation_by_agg(log_agg, meta_A, meta_B):
                                     and meta_B[ES_PHONE_PROPERTY['total_calls']] > 2 * THRESHOLDS['total_calls'] 
                                     else THRESHOLDS['avg_duration'])
     if log_agg['avg_duration'] >= 0.5 * min(threshold_avg_duration_A, threshold_avg_duration_B):
+        logger.info(f"Relation detected by avg duration")
         return True
     return False
 

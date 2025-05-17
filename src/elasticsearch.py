@@ -26,7 +26,7 @@ def query_relation(phone_a, phone_b):
         response_hits = response.json()['hits']['hits']
         return response_hits[0]['_source'][ES_PROPERTY['relation_id_search']] if response_hits else None
     except Exception as e:
-        logger.error(f"Error querying Elasticsearch: {e}")
+        logger.error(f"Failed to fetch from Elasticsearch: {e}")
         return None
 
 def query_phone_entity(phone_a, phone_b):
@@ -58,7 +58,7 @@ def query_phone_entity(phone_a, phone_b):
                 meta_B = hit_properties
         return meta_A, meta_B
     except Exception as e:
-        logger.error(f"Error querying Elasticsearch: {e}")
+        logger.error(f"Failed to fetch from Elasticsearch: {e}")
         return None
 
 def transform_properties(properties):
