@@ -42,7 +42,7 @@ def process_message(msg_key, msg):
             send_output_to_kafka(build_output_message(phone_a, phone_b))
             return
 
-        logger.info(f"{phone_a}-{phone_b} has no relation. Checking old data...")
+        logger.info(f"Relation not detected for {phone_a}-{phone_b} by current data. Checking old data...")
 
         # Check old logs in ClickHouse
         old_logs_agg = query_clickhouse(phone_a, phone_b)
