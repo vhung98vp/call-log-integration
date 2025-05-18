@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from confluent_kafka import Consumer, Producer
 from .elasticsearch import query_phone_entity, query_relation
 from .clickhouse import query_clickhouse
-from .utlis import check_relation_by_agg, check_relation_by_old_logs, build_output_message, map_metadata, is_spam_number
+from .utlis import check_relation_by_agg, check_relation_by_old_logs, build_output_message, is_spam_number
 from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MAX_WORKERS, MES_FIELD
 
 producer = Producer(KAFKA_PRODUCER_CONFIG)

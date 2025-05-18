@@ -86,15 +86,6 @@ def build_output_message(phone_a, phone_b):
         ES_RL_PROPERTY['create_user']: ES_RL_CONF['create_user']
     }
 
-def map_metadata(new_meta, old_key=MES_PHONE_MD, new_key=ES_PHONE_PROPERTY):
-    old_key = {v: k for k, v in old_key.items()}
-    result = {}
-    for k, v in new_meta.items():
-        nk = old_key.get(k)
-        if nk:
-            result[new_key[nk]] = v 
-    return result
-
 
 def is_spam_number(phone_number, metadata):
     metadata['avg_call_per_day'] = metadata[MES_PHONE_MD['total_calls']] \

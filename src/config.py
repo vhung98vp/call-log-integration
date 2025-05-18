@@ -66,7 +66,7 @@ SPAM_THRESHOLDS = {
     'total_contacts': int(os.environ.get('THRESHOLD_SPAM_TOTAL_CONTACTS', '100')),
     'avg_call_per_contact': int(os.environ.get('THRESHOLD_SPAM_AVG_CALL_PER_CONTACT', '3')),
     'call_from_rate': float(os.environ.get('THRESHOLD_SPAM_CALL_FROM_RATE', '0.9')),
-    'avg_duration': int(os.environ.get('THRESHOLD_SPAM_AVG_DURATION', '10'))
+    'avg_duration': int(os.environ.get('THRESHOLD_SPAM_AVG_DURATION', '30'))
 }
 
 SERVICE_THRESHOLDS = {

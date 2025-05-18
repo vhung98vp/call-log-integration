@@ -47,7 +47,10 @@
         "call_from_rate": "callFromRate",
         "max_duration": "maxDuration",
         "total_duration": "totalDuration",
-        "avg_days": "avgDays"
+        "avg_days": "avgDays",
+        "total_business_calls": "totalBusinessCalls",
+        "total_weekend_calls": "totalWeekendCalls",
+        "total_night_calls": "totalNightCalls"
     },
     "clickhouse_properties": {
         "phone_a": "a_sub",
