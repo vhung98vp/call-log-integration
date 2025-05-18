@@ -52,11 +52,11 @@ CLICKHOUSE = {
 }
 
 RL_THRESHOLDS = {
-    'total_duration': int(os.environ.get('THRESHOLD_TOTAL_DURATION', '120')),
-    'max_duration': int(os.environ.get('THRESHOLD_MAX_DURATION', '60')),
-    'avg_duration': int(os.environ.get('THRESHOLD_AVG_DURATION', '30')),
-    'total_calls': int(os.environ.get('THRESHOLD_TOTAL_CALLS', '4')),
-    'avg_days': int(os.environ.get('THRESHOLD_AVG_DAYS', '1'))
+    'total_duration': int(os.environ.get('THRESHOLD_RELATION_TOTAL_DURATION', '120')),
+    'max_duration': int(os.environ.get('THRESHOLD_RELATION_MAX_DURATION', '60')),
+    'avg_duration': int(os.environ.get('THRESHOLD_RELATION_AVG_DURATION', '30')),
+    'total_calls': int(os.environ.get('THRESHOLD_RELATION_TOTAL_CALLS', '4')),
+    'avg_days': int(os.environ.get('THRESHOLD_RELATION_AVG_DAYS', '1'))
 }
 
 SPAM_THRESHOLDS = {

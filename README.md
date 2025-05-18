@@ -20,8 +20,11 @@ This project is designed to check call log and integrate relation data into the 
 - `ES_PASSWORD`: Elasticsearch password
 - `ES_PHONE_INDEX`: Name of the Elasticsearch index for phone profile
 - `ES_RELATION_INDEX`: Name of the Elasticsearch index for relations
-- `ES_VALUE_*`: Value for Elasticsearch write data
-- `ES_PROPERTY_*`: Name of the Elasticsearch properties
+- `ES_RELATION_TYPE`: Relation type between 2 numbers of Elasticsearch
+- `ES_ENTITY_TYPE`: Entity type of phone in Elasticsearch
+- `ES_ENTITY_SOURCE`: Entity source id of phone in Elasticsearch
+- `ES_ENTITY_DATASOURCE`: Entity datasource of phone in Elasticsearch
+- `ES_CREATE_USER`: Default user to create relation in Elasticsearch
 - `CLICKHOUSE_URL`: ClickHouse database URL
 - `CLICKHOUSE_TABLE`: ClickHouse table name
 - `THRESHOLD_TOTAL_DURATION`: Threshold for total call duration
@@ -29,4 +32,6 @@ This project is designed to check call log and integrate relation data into the 
 - `THRESHOLD_AVG_DURATION`: Threshold for average call duration
 - `THRESHOLD_TOTAL_CALLS`: Threshold for total call count
 - `THRESHOLD_AVG_DAYS`: Threshold for average days of calls
+- `THRESHOLD_SPAM_*`: Thresholds for spam number detection
+- `THRESHOLD_SERVICE_*`: Thresholds for service number detection
 - `MAX_WORKERS`: Maximum number of worker threads
