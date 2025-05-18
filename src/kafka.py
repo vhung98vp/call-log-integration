@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from confluent_kafka import Consumer, Producer
 from .elasticsearch import query_phone_entity, query_relation
 from .clickhouse import query_clickhouse
-from .utlis import check_relation_by_agg, check_relation_by_old_logs, build_output_message, map_metadata
+from .utlis import check_relation_by_agg, check_relation_by_old_logs, build_output_message, map_metadata, is_spam_number
 from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MAX_WORKERS, MES_FIELD
 
 producer = Producer(KAFKA_PRODUCER_CONFIG)
@@ -27,8 +27,9 @@ def process_message(msg_key, msg):
         if any(not data.get(key) for key in MES_FIELD.values()):
             logger.warning(f"Invalid message data: {msg}")
             return
-        metadata_A = map_metadata(metadata_A)
-        metadata_B = map_metadata(metadata_B)
+
+        if is_spam_number(phone_a, metadata_A) or is_spam_number(phone_b, metadata_B):
+            return
 
         logger.info(f"Processing Kafka message for {phone_a}-{phone_b}...")
 

@@ -51,12 +51,30 @@ CLICKHOUSE = {
     'table': os.environ.get('CLICKHOUSE_TABLE', 'call_logs')
 }
 
-THRESHOLDS = {
+RL_THRESHOLDS = {
     'total_duration': int(os.environ.get('THRESHOLD_TOTAL_DURATION', '120')),
     'max_duration': int(os.environ.get('THRESHOLD_MAX_DURATION', '60')),
     'avg_duration': int(os.environ.get('THRESHOLD_AVG_DURATION', '30')),
     'total_calls': int(os.environ.get('THRESHOLD_TOTAL_CALLS', '4')),
     'avg_days': int(os.environ.get('THRESHOLD_AVG_DAYS', '1'))
+}
+
+SPAM_THRESHOLDS = {
+    'extreme_avg_call_per_day': int(os.environ.get('THRESHOLD_SPAM_EXTREME_AVG_CALL_PER_DAY', '500')),
+    'extreme_total_duration': int(os.environ.get('THRESHOLD_SPAM_EXTREME_TOTAL_DURATION', '1000000')),
+    'avg_call_per_day': int(os.environ.get('THRESHOLD_SPAM_AVG_CALL_PER_DAY', '50')),
+    'total_contacts': int(os.environ.get('THRESHOLD_SPAM_TOTAL_CONTACTS', '100')),
+    'avg_call_per_contact': int(os.environ.get('THRESHOLD_SPAM_AVG_CALL_PER_CONTACT', '3')),
+    'call_from_rate': float(os.environ.get('THRESHOLD_SPAM_CALL_FROM_RATE', '0.9')),
+    'avg_duration': int(os.environ.get('THRESHOLD_SPAM_AVG_DURATION', '10'))
+}
+
+SERVICE_THRESHOLDS = {
+    'avg_call_per_day': int(os.environ.get('THRESHOLD_SERVICE_AVG_CALL_PER_DAY', '10')),
+    'total_days': int(os.environ.get('THRESHOLD_SERVICE_TOTAL_DAYS', '20')),
+    'total_contacts': int(os.environ.get('THRESHOLD_SERVICE_TOTAL_CONTACTS', '50')),
+    'call_from_rate': float(os.environ.get('THRESHOLD_SERVICE_CALL_FROM_RATE', '0.7')),
+    'avg_duration': int(os.environ.get('THRESHOLD_SERVICE_AVG_DURATION', '60'))
 }
 
 

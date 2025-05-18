@@ -32,10 +32,15 @@
         "meta_b": "metaB"
     },
     "message_phone_metadata": {
-        "total_calls": "totalCalls",
-        "call_from_rate": "callFromRate",
-        "avg_duration_from": "avgDurationFrom",
-        "avg_duration_to": "avgDurationTo"
+        "total_calls": "metadataTotalCalls",
+        "call_from_rate": "metadataCallFromRate",
+        "business_call_rate": "metadataBusinessCallRate",
+        "avg_duration_from": "metadataAvgDurationFrom",
+        "avg_duration_to": "metadataAvgDurationTo",
+        "total_weekend_calls": "metadataTotalWeekendCalls",
+        "total_night_calls": "metadataTotalNightCalls",
+        "total_day_from": "metadataTotalDayFrom",
+        "total_contacts": "metadataTotalContacts"
     },
     "message_phone_agg": {
         "total_calls": "totalCalls",
