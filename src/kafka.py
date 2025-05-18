@@ -28,10 +28,10 @@ def process_message(msg_key, msg):
             logger.warning(f"Invalid message data: {msg}")
             return
 
+        logger.info(f"Processing Kafka message for {phone_a}-{phone_b}...")
+
         if is_spam_number(phone_a, metadata_A) or is_spam_number(phone_b, metadata_B):
             return
-
-        logger.info(f"Processing Kafka message for {phone_a}-{phone_b}...")
 
         current_relation = query_relation(phone_a, phone_b)
         if current_relation:

@@ -71,7 +71,7 @@ SPAM_THRESHOLDS = {
 
 SERVICE_THRESHOLDS = {
     'avg_call_per_day': int(os.environ.get('THRESHOLD_SERVICE_AVG_CALL_PER_DAY', '10')),
-    'total_days': int(os.environ.get('THRESHOLD_SERVICE_TOTAL_DAYS', '20')),
+    'total_day_from': int(os.environ.get('THRESHOLD_SERVICE_TOTAL_DAY_FROM', '20')),
     'total_contacts': int(os.environ.get('THRESHOLD_SERVICE_TOTAL_CONTACTS', '50')),
     'call_from_rate': float(os.environ.get('THRESHOLD_SERVICE_CALL_FROM_RATE', '0.7')),
     'avg_duration': int(os.environ.get('THRESHOLD_SERVICE_AVG_DURATION', '60'))

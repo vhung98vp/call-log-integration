@@ -121,7 +121,7 @@ def is_spam_number(phone_number, metadata):
 
     # Service detection
     if metadata['avg_call_per_day'] > SERVICE_THRESHOLDS['avg_call_per_day'] and \
-        metadata[MES_PHONE_MD['total_days']] > SERVICE_THRESHOLDS['total_days'] and \
+        metadata[MES_PHONE_MD['total_day_from']] > SERVICE_THRESHOLDS['total_day_from'] and \
         metadata[MES_PHONE_MD['total_contacts']] > SERVICE_THRESHOLDS['total_contacts'] and \
         metadata[MES_PHONE_MD['call_from_rate']] > SERVICE_THRESHOLDS['call_from_rate'] and \
         metadata['avg_duration'] < SERVICE_THRESHOLDS['avg_duration']:
