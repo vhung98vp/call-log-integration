@@ -101,8 +101,10 @@ def is_spam_number(phone_number, metadata):
             * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_day_from']]
     metadata['avg_call_per_contact'] = metadata[MES_PHONE_MD['total_calls']] \
             * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_contacts']]
-    metadata['avg_duration'] = calc_avg_duration(metadata, MES_PHONE_MD)
-    metadata['total_duration'] = metadata['avg_duration'] * metadata[MES_PHONE_MD['total_calls']]
+    metadata['total_duration'] = metadata[MES_PHONE_MD['total_calls']] * metadata[MES_PHONE_MD['call_from_rate']] \
+            * metadata[MES_PHONE_MD['avg_duration_from']] + \
+            metadata[MES_PHONE_MD['total_calls']] * (1 - metadata[MES_PHONE_MD['call_from_rate']]) \
+            * metadata[MES_PHONE_MD['avg_duration_to']]
 
     # Spam detection with extreme values
     if metadata['avg_call_per_day'] > SPAM_THRESHOLDS['extreme_avg_call_per_day'] or \
@@ -115,7 +117,7 @@ def is_spam_number(phone_number, metadata):
         metadata[MES_PHONE_MD['total_contacts']] > SPAM_THRESHOLDS['total_contacts'] and \
         metadata['avg_call_per_contact'] < SPAM_THRESHOLDS['avg_call_per_contact'] and \
         metadata[MES_PHONE_MD['call_from_rate']] > SPAM_THRESHOLDS['call_from_rate'] and \
-        metadata['avg_duration'] < SPAM_THRESHOLDS['avg_duration']:
+        metadata[MES_PHONE_MD['avg_duration_from']] < SPAM_THRESHOLDS['avg_duration']:
         logger.info(f"Spam number detected by filter 2: {phone_number}")
         return True
 
@@ -124,7 +126,7 @@ def is_spam_number(phone_number, metadata):
         metadata[MES_PHONE_MD['total_day_from']] > SERVICE_THRESHOLDS['total_day_from'] and \
         metadata[MES_PHONE_MD['total_contacts']] > SERVICE_THRESHOLDS['total_contacts'] and \
         metadata[MES_PHONE_MD['call_from_rate']] > SERVICE_THRESHOLDS['call_from_rate'] and \
-        metadata['avg_duration'] < SERVICE_THRESHOLDS['avg_duration']:
+        metadata[MES_PHONE_MD['avg_duration_from']] < SERVICE_THRESHOLDS['avg_duration']:
         logger.info(f"Service number detected by filter: {phone_number}")
         return True
 
