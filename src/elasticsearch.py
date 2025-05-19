@@ -31,7 +31,7 @@ def query_relation(phone_a, phone_b):
 
 def query_phone_entity(phone_a, phone_b):
     url = f"http://{ES['url']}/{ES['phone_index']}/_search"
-    auth = (ES['user'], ES['password'])
+    auth = (ES['user'], ES['password']) if ES['user'] and ES['password'] else None
     headers = {'Content-Type': 'application/json'}
     query = {
         "query": {

@@ -11,18 +11,24 @@ def query_clickhouse(phone_a, phone_b):
 
     queries = []
     for table in CLICKHOUSE['tables']:
-        query = f"""
+        qr = f"""
             SELECT {CH_PROPERTY['duration']}, {CH_PROPERTY['start_time']}, {CH_PROPERTY['call_type']}
             FROM {table}
             WHERE ({CH_PROPERTY['phone_a']} = '{phone_a}' AND {CH_PROPERTY['phone_b']} = '{phone_b}') 
                     OR ({CH_PROPERTY['phone_a']} = '{phone_b}' AND {CH_PROPERTY['phone_b']} = '{phone_a}')
         """
-        queries.append(query)
+        queries.append(qr)
     union_query = " UNION ALL ".join(queries)
-    merged_query = f"{union_query} LIMIT 50 FORMAT JSONEachRow"
+    query = {"query": f"{union_query} LIMIT 50 FORMAT JSONEachRow"}
 
+    url = CLICKHOUSE['url']
+    headers = {'Content-Type': 'application/json'}
+    auth = (CLICKHOUSE['user'], CLICKHOUSE['password']) if CLICKHOUSE['user'] and CLICKHOUSE['password'] else None
     try:
-        response = requests.post(CLICKHOUSE['url'], data={'query': merged_query})
+        response = requests.post(url=url, 
+                                    headers=headers,
+                                    auth=auth, 
+                                    data=query)
         response.raise_for_status()
         old_logs = response.text.strip().split('\n')
         logger.info(f"{phone_a}-{phone_b}: Received {len(old_logs)} call logs from ClickHouse.")
