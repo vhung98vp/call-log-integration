@@ -13,8 +13,8 @@
         "to_entity_type": "toEntityType",
         "from_source": "fromSource",
         "to_source": "toSource",
-        "from_datasource": "fromDatasource",
-        "to_datasource": "toDatasource",
+        "from_datasource": "fromDataSource",
+        "to_datasource": "toDataSource",
         "create_user": "createUser"
     },
     "es_phone_properties": {
