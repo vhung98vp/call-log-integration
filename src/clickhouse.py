@@ -27,9 +27,17 @@ def query_clickhouse(phone_a, phone_b):
         return None
 
 def agg_logs(logs):
-    return [] if not logs else {
-        'total_calls': len(logs),
-        'total_duration': sum(log[CH_PROPERTY['duration']] for log in logs),
-        'total_months': len(set(log[CH_PROPERTY['start_time']][:7] for log in logs))
+    log_seen = set()
+    unique_logs = []
+    for log in logs:
+        key = (log[CH_PROPERTY['start_time']], log[CH_PROPERTY['duration']])
+        if key not in log_seen:
+            log_seen.add(key)
+            unique_logs.append(log)
+
+    return [] if not unique_logs else {
+        'total_calls': len(unique_logs),
+        'total_duration': sum(log[CH_PROPERTY['duration']] for log in unique_logs),
+        'total_months': len(set(log[CH_PROPERTY['start_time']][:7] for log in unique_logs))
     }
     
