@@ -62,7 +62,7 @@ def check_relation_by_old_logs(log_agg, old_logs_agg, meta_A, meta_B):
 
 
 def calc_avg_duration(metadata, property):
-    if metadata[property['total_calls']] > 0:
+    if metadata and metadata[property['total_calls']] > 0:
         total_calls_from = metadata[property['total_calls']] * metadata[property['call_from_rate']]
         total_calls_to = metadata[property['total_calls']] - total_calls_from
         total_duration_from = metadata[property['avg_duration_from']] * total_calls_from

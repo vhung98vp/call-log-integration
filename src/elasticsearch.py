@@ -47,15 +47,16 @@ def query_phone_entity(phone_a, phone_b):
                                     json=query)
         response.raise_for_status()
         response_hits = response.json()['hits']['hits']
+        meta_A, meta_B = None, None
         if not response_hits:
             logger.warning(f"No phone entity found for {phone_a} or {phone_b}")
-            return None, None
-        for hit in response_hits:
-            hit_properties = transform_properties(hit['_source']['properties'])
-            if hit_properties[ES_PHONE_PROPERTY['phone_number']] == phone_a:
-                meta_A = hit_properties
-            elif hit_properties[ES_PHONE_PROPERTY['phone_number']] == phone_b:
-                meta_B = hit_properties
+        else:
+            for hit in response_hits:
+                hit_properties = transform_properties(hit['_source']['properties'])
+                if hit_properties[ES_PHONE_PROPERTY['phone_number']] == phone_a:
+                    meta_A = hit_properties
+                elif hit_properties[ES_PHONE_PROPERTY['phone_number']] == phone_b:
+                    meta_B = hit_properties
         return meta_A, meta_B
     except Exception as e:
         logger.error(f"Failed to fetch from Elasticsearch: {e}")
