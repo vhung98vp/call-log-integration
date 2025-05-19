@@ -13,12 +13,13 @@ def query_clickhouse(phone_a, phone_b):
     for table in CLICKHOUSE['tables']:
         query = f"""
             SELECT {CH_PROPERTY['duration']}, {CH_PROPERTY['start_time']}, {CH_PROPERTY['call_type']}
-            FROM {CLICKHOUSE['table']}
+            FROM {table}
             WHERE ({CH_PROPERTY['phone_a']} = '{phone_a}' AND {CH_PROPERTY['phone_b']} = '{phone_b}') 
                     OR ({CH_PROPERTY['phone_a']} = '{phone_b}' AND {CH_PROPERTY['phone_b']} = '{phone_a}')
         """
         queries.append(query)
-    merged_query = " UNION ALL ".join(queries)
+    union_query = " UNION ALL ".join(queries)
+    merged_query = f"{union_query} LIMIT 50 FORMAT JSONEachRow"
 
     try:
         response = requests.post(CLICKHOUSE['url'], data={'query': merged_query})
