@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 MAX_WORKERS = int(os.environ.get('MAX_WORKERS', 4))
 
 KAFKA = {
-    'brokers': os.environ.get('KAFKA_BOOTSTRAP_SERVERS'),
+    'brokers': os.environ.get('KAFKA_BOOTSTRAP_SERVER'),
     'consumer_group': os.environ.get('KAFKA_CONSUMER_GROUP', 'default_consumer_group'),
     'consumer_timeout': float(os.environ.get('KAFKA_CONSUMER_TIMEOUT', 1)),
     'auto_offset_reset': os.environ.get('KAFKA_AUTO_OFFSET_RESET', 'earliest'),
