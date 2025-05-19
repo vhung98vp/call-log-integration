@@ -48,7 +48,7 @@ ES_RL_CONF = {
 
 CLICKHOUSE = {
     'url': os.environ.get('CLICKHOUSE_URL'),
-    'table': os.environ.get('CLICKHOUSE_TABLE', 'call_logs')
+    'tables': os.environ.get('CLICKHOUSE_TABLES', 'call_logs').split(',')
 }
 
 RL_THRESHOLDS = {
