@@ -1,4 +1,5 @@
 import requests
+import json
 from .config import CLICKHOUSE, CH_PROPERTY, logger
 
 def query_clickhouse(phone_a, phone_b):
@@ -19,7 +20,7 @@ def query_clickhouse(phone_a, phone_b):
         """
         queries.append(qr)
     union_query = " UNION ALL ".join(queries)
-    query = {"query": f"{union_query} LIMIT {CLICKHOUSE['query_limit']} FORMAT JSONEachRow"}
+    query = f"{union_query} LIMIT {CLICKHOUSE['query_limit']} FORMAT JSONEachRow"
 
     url = CLICKHOUSE['url']
     headers = {'Content-Type': 'application/json'}
@@ -30,7 +31,7 @@ def query_clickhouse(phone_a, phone_b):
                                     auth=auth, 
                                     data=query)
         response.raise_for_status()
-        old_logs = response.text.strip().split('\n')
+        old_logs = [json.load(log) for log in response.text.strip().splitlines()]
         logger.info(f"{phone_a}-{phone_b}: Received {len(old_logs)} call logs from ClickHouse.")
         return agg_logs(old_logs)
     except Exception as e:
