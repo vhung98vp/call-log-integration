@@ -38,7 +38,7 @@ def process_message(msg_key, msg):
             logger.info(f"Found relation from Elasticsearch for {phone_a}-{phone_b}")
             return
         
-        if check_relation_by_agg(log_agg, metadata_A, metadata_B):
+        if check_relation_by_agg(log_agg):
             logger.info(f"Relation detected for {phone_a}-{phone_b} by agg data")
             send_output_to_kafka(build_output_message(phone_a, phone_b))
             return
