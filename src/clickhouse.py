@@ -31,7 +31,7 @@ def query_clickhouse(phone_a, phone_b):
                                     auth=auth, 
                                     data=query)
         response.raise_for_status()
-        old_logs = [json.load(log) for log in response.text.strip().splitlines()]
+        old_logs = [json.loads(log) for log in response.text.strip().splitlines()]
         logger.info(f"{phone_a}-{phone_b}: Received {len(old_logs)} call logs from ClickHouse.")
         return agg_logs(old_logs)
     except Exception as e:
