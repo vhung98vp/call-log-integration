@@ -51,6 +51,7 @@ CLICKHOUSE = {
     'tables': os.environ.get('CLICKHOUSE_TABLES', 'call_logs').split(','),
     'user': os.environ.get('CLICKHOUSE_USER'),
     'password': os.environ.get('CLICKHOUSE_PASSWORD'),
+    'query_limit': int(os.environ.get('CLICKHOUSE_QUERY_LIMIT', '100')),
 }
 
 RL_THRESHOLDS = {

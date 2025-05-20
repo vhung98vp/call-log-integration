@@ -19,7 +19,7 @@ def query_clickhouse(phone_a, phone_b):
         """
         queries.append(qr)
     union_query = " UNION ALL ".join(queries)
-    query = {"query": f"{union_query} LIMIT 50 FORMAT JSONEachRow"}
+    query = {"query": f"{union_query} LIMIT {CLICKHOUSE['query_limit']} FORMAT JSONEachRow"}
 
     url = CLICKHOUSE['url']
     headers = {'Content-Type': 'application/json'}
