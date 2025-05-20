@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from confluent_kafka import Consumer, Producer
 from .elasticsearch import query_phone_entity, query_relation
 from .clickhouse import query_clickhouse
-from .utlis import check_relation_by_agg, check_relation_by_old_logs, build_output_message, is_spam_number
+from .utlis import check_relation_by_agg, check_relation_by_agg_metadata, check_relation_by_old_logs, build_output_message, is_spam_number
 from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MAX_WORKERS, MES_FIELD
 
 producer = Producer(KAFKA_PRODUCER_CONFIG)
@@ -39,15 +39,19 @@ def process_message(msg_key, msg):
             return
         
         if check_relation_by_agg(log_agg, metadata_A, metadata_B):
-            logger.info(f"Relation detected for {phone_a}-{phone_b} by current data")
+            logger.info(f"Relation detected for {phone_a}-{phone_b} by agg data")
             send_output_to_kafka(build_output_message(phone_a, phone_b))
             return
 
-        logger.info(f"Relation not detected for {phone_a}-{phone_b} by current data. Checking old data...")
-
+        if check_relation_by_agg_metadata(log_agg, metadata_A, metadata_B):
+            logger.info(f"Relation detected for {phone_a}-{phone_b} by agg and metadata")
+            send_output_to_kafka(build_output_message(phone_a, phone_b))
+            return
+        
         # Check old logs in ClickHouse
         old_logs_agg = query_clickhouse(phone_a, phone_b)
         if old_logs_agg:
+            logger.info(f"Found old logs for {phone_a}-{phone_b}. Checking...")
             meta_A, meta_B = query_phone_entity(phone_a, phone_b)
             if check_relation_by_old_logs(log_agg, old_logs_agg, meta_A, meta_B):
                 logger.info(f"Relation detected for {phone_a}-{phone_b} by old data")    

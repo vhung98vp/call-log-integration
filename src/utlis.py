@@ -10,27 +10,27 @@ def build_relation_id(phone_a, phone_b, relation_type=ES_RL_CONF['relation_type'
     return str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{relation_type}:{phone_a}:{phone_b}"))
 
 
-def check_relation_by_agg(log_agg, meta_A, meta_B):
+def check_relation_by_agg(log_agg):
     if log_agg[MES_PHONE_AGG['total_duration']] >= RL_THRESHOLDS['total_duration'] or \
       log_agg[MES_PHONE_AGG['max_duration']] >= RL_THRESHOLDS['max_duration'] or \
       (log_agg[MES_PHONE_AGG['total_calls']] >= RL_THRESHOLDS['total_calls'] and \
         log_agg[MES_PHONE_AGG['avg_days']] >= RL_THRESHOLDS['avg_days']):
-        logger.info(f"Relation detected by aggregated log")
         return True
+    return False
 
+def check_relation_by_agg_metadata(log_agg, meta_A, meta_B):
     log_agg['avg_duration'] = log_agg[MES_PHONE_AGG['total_duration']] / log_agg[MES_PHONE_AGG['total_calls']]
-    meta_A['avg_duration'] = calc_avg_duration(meta_A, MES_PHONE_AGG)
-    meta_B['avg_duration'] = calc_avg_duration(meta_B, MES_PHONE_AGG)
+    meta_A['avg_duration'] = calc_avg_duration(meta_A, MES_PHONE_MD)
+    meta_B['avg_duration'] = calc_avg_duration(meta_B, MES_PHONE_MD)
     threshold_avg_duration_A = (meta_A['avg_duration'] 
                                     if meta_A 
-                                    and meta_A[ES_PHONE_PROPERTY['total_calls']] > 2 * RL_THRESHOLDS['total_calls'] 
+                                    and meta_A[MES_PHONE_MD['total_calls']] > 2 * RL_THRESHOLDS['total_calls'] 
                                     else RL_THRESHOLDS['avg_duration'])
     threshold_avg_duration_B = (meta_B['avg_duration'] 
                                     if meta_B 
-                                    and meta_B[ES_PHONE_PROPERTY['total_calls']] > 2 * RL_THRESHOLDS['total_calls'] 
+                                    and meta_B[MES_PHONE_MD['total_calls']] > 2 * RL_THRESHOLDS['total_calls'] 
                                     else RL_THRESHOLDS['avg_duration'])
     if log_agg['avg_duration'] >= 0.5 * min(threshold_avg_duration_A, threshold_avg_duration_B):
-        logger.info(f"Relation detected by avg duration")
         return True
     return False
 
