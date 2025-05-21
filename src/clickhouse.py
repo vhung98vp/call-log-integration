@@ -1,6 +1,6 @@
 import requests
 import json
-from .config import CLICKHOUSE, CH_PROPERTY, logger
+from .config import CLICKHOUSE, LOG_PROPERTY, logger
 
 def query_clickhouse(phone_a, phone_b):
     try: # Convert phone numbers to integers for clickhouse query
@@ -13,10 +13,10 @@ def query_clickhouse(phone_a, phone_b):
     queries = []
     for table in CLICKHOUSE['tables']:
         qr = f"""
-            SELECT {CH_PROPERTY['duration']}, {CH_PROPERTY['start_time']}, {CH_PROPERTY['call_type']}
+            SELECT {LOG_PROPERTY['duration']}, {LOG_PROPERTY['start_time']}, {LOG_PROPERTY['call_type']}
             FROM {table}
-            WHERE ({CH_PROPERTY['phone_a']} = '{phone_a}' AND {CH_PROPERTY['phone_b']} = '{phone_b}') 
-                    OR ({CH_PROPERTY['phone_a']} = '{phone_b}' AND {CH_PROPERTY['phone_b']} = '{phone_a}')
+            WHERE ({LOG_PROPERTY['phone_a']} = '{phone_a}' AND {LOG_PROPERTY['phone_b']} = '{phone_b}') 
+                    OR ({LOG_PROPERTY['phone_a']} = '{phone_b}' AND {LOG_PROPERTY['phone_b']} = '{phone_a}')
         """
         queries.append(qr)
     union_query = " UNION ALL ".join(queries)
@@ -39,10 +39,10 @@ def query_clickhouse(phone_a, phone_b):
         return None
 
 def agg_logs(logs):
-    unique_logs = {log[CH_PROPERTY['start_time']]: log for log in logs}.values()
+    unique_logs = {log[LOG_PROPERTY['start_time']]: log for log in logs}.values()
     return {} if not unique_logs else {
         'total_calls': len(unique_logs),
-        'total_duration': sum(log[CH_PROPERTY['duration']] for log in unique_logs),
-        'total_months': len(set(log[CH_PROPERTY['start_time']][:7] for log in unique_logs))
+        'total_duration': sum(log[LOG_PROPERTY['duration']] for log in unique_logs),
+        'total_months': len(set(log[LOG_PROPERTY['start_time']][:7] for log in unique_logs))
     }
     

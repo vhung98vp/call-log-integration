@@ -4,7 +4,8 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from confluent_kafka import Consumer, Producer
 from .elasticsearch import query_phone_entity, query_relation
-from .clickhouse import query_clickhouse
+# from .clickhouse import query_clickhouse
+from .log_api import query_log_api
 from .utlis import check_relation_by_agg, check_relation_by_agg_metadata, check_relation_by_old_logs, build_output_message, is_spam_number
 from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MAX_WORKERS, MES_FIELD
 
@@ -49,7 +50,7 @@ def process_message(msg_key, msg):
             return
         
         # Check old logs in ClickHouse
-        old_logs_agg = query_clickhouse(phone_a, phone_b)
+        old_logs_agg = query_log_api(phone_a, phone_b)
         if old_logs_agg:
             logger.info(f"Found old logs for {phone_a}-{phone_b}. Checking...")
             meta_A, meta_B = query_phone_entity(phone_a, phone_b)

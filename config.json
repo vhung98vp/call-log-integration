@@ -52,7 +52,7 @@
         "total_weekend_calls": "totalWeekendCalls",
         "total_night_calls": "totalNightCalls"
     },
-    "clickhouse_properties": {
+    "log_properties": {
         "phone_a": "a_sub",
         "phone_b": "b_sub",
         "start_time": "start",

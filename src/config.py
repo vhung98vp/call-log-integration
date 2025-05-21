@@ -46,12 +46,16 @@ ES_RL_CONF = {
     'create_user': int(os.environ.get('ES_CREATE_USER'))  
 }
 
-CLICKHOUSE = {
-    'url': os.environ.get('CLICKHOUSE_URL'),
-    'tables': os.environ.get('CLICKHOUSE_TABLES', 'call_logs').split(','),
-    'user': os.environ.get('CLICKHOUSE_USER'),
-    'password': os.environ.get('CLICKHOUSE_PASSWORD'),
-    'query_limit': int(os.environ.get('CLICKHOUSE_QUERY_LIMIT', '100')),
+# CLICKHOUSE = {
+#     'url': os.environ.get('CLICKHOUSE_URL'),
+#     'tables': os.environ.get('CLICKHOUSE_TABLES', 'call_logs').split(','),
+#     'user': os.environ.get('CLICKHOUSE_USER'),
+#     'password': os.environ.get('CLICKHOUSE_PASSWORD'),
+#     'query_limit': int(os.environ.get('CLICKHOUSE_QUERY_LIMIT', '100')),
+# }
+
+LOG_API = {
+    'url': os.environ.get('LOG_API_URL')
 }
 
 RL_THRESHOLDS = {
@@ -89,11 +93,13 @@ with open("config.json", "r") as f:
     MES_FIELD = config.get('message_fields', {})
     MES_PHONE_MD = config.get('message_phone_metadata', {})
     MES_PHONE_AGG = config.get('message_phone_agg', {})
-    CH_PROPERTY = config.get('clickhouse_properties', {})
+    LOG_PROPERTY = config.get('log_properties', {})
 
 if not KAFKA['brokers']:
     raise ValueError("KAFKA_BOOTSTRAP_SERVERS environment variable is not set. Please set it to the Kafka brokers address.")
 if not ES['url']:
     raise ValueError("ES_URL environment variable is not set. Please set it to the Elasticsearch URL.")
-if not CLICKHOUSE['url']:
-    raise ValueError("CLICKHOUSE_URL environment variable is not set. Please set it to the ClickHouse URL.")
+# if not CLICKHOUSE['url']:
+#     raise ValueError("CLICKHOUSE_URL environment variable is not set. Please set it to the ClickHouse URL.")
+if not LOG_API['url']:
+    raise ValueError("LOG_API_URL environment variable is not set. Please set it to the Log API URL.")
