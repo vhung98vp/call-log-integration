@@ -25,8 +25,9 @@ This project is designed to check call log and integrate relation data into the 
 - `ES_ENTITY_SOURCE`: Entity source id of phone in Elasticsearch
 - `ES_ENTITY_DATASOURCE`: Entity datasource of phone in Elasticsearch
 - `ES_CREATE_USER`: Default user to create relation in Elasticsearch
-- `CLICKHOUSE_URL`: ClickHouse database URL
-- `CLICKHOUSE_TABLE`: ClickHouse table name
+<!-- - `CLICKHOUSE_URL`: ClickHouse database URL
+- `CLICKHOUSE_TABLE`: ClickHouse table name -->
+- `LOG_API_URL`: API URL for old logs query
 - `THRESHOLD_TOTAL_DURATION`: Threshold for total call duration
 - `THRESHOLD_MAX_DURATION`: Threshold for maximum call duration
 - `THRESHOLD_AVG_DURATION`: Threshold for average call duration
@@ -34,4 +35,4 @@ This project is designed to check call log and integrate relation data into the 
 - `THRESHOLD_AVG_DAYS`: Threshold for average days of calls
 - `THRESHOLD_SPAM_*`: Thresholds for spam number detection
 - `THRESHOLD_SERVICE_*`: Thresholds for service number detection
-- `MAX_WORKERS`: Maximum number of worker threads
+<!-- - `MAX_WORKERS`: Maximum number of worker threads -->

@@ -1,7 +1,7 @@
 import json
 import uuid
 import time
-from concurrent.futures import ThreadPoolExecutor
+# from concurrent.futures import ThreadPoolExecutor
 from confluent_kafka import Consumer, Producer
 from .elasticsearch import query_phone_entity, query_relation
 # from .clickhouse import query_clickhouse
@@ -13,7 +13,7 @@ producer = Producer(KAFKA_PRODUCER_CONFIG)
 consumer = Consumer(KAFKA_CONSUMER_CONFIG)
 consumer.subscribe([KAFKA['input_topic']])
 
-executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
+# executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 
 def process_message(msg_key, msg):
@@ -92,7 +92,8 @@ def start_kafka_consumer():
                 message_key = msg.key().decode("utf-8") if msg.key() else None
                 if not message_key:
                     logger.warning(f"Received message without key: {message}")
-                executor.submit(process_message, message_key, message)
+                # executor.submit(process_message, message_key, message)
+                process_message(message_key, message)
                 consumer.commit(asynchronous=False)
                 processed_count += 1
             except Exception as e:
