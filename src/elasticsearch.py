@@ -7,7 +7,7 @@ from .utlis import build_relation_id
 def query_relation(phone_a, phone_b):
     relation_id_1 = build_relation_id(phone_a, phone_b)
     relation_id_2 = build_relation_id(phone_b, phone_a)
-    url = f"http://{ES['url']}/{ES['relation_index']}/_search"
+    url = f"{ES['url']}/{ES['relation_index']}/_search"
     auth = (ES['user'], ES['password']) if ES['user'] and ES['password'] else None
     headers = {'Content-Type': 'application/json'}
     query = {
