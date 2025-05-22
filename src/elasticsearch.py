@@ -70,5 +70,5 @@ def transform_properties(properties):
         if ES_PROPERTY['suffix_pattern']:
             key = re.sub(ES['suffix_pattern'], '', key)
         if key in ES_PHONE_PROPERTY:
-            normal_dict[key] = value
+            normal_dict[key] = float(value) # Map all selected es properties to float
     return normal_dict
