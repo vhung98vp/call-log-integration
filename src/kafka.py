@@ -22,9 +22,9 @@ def process_message(msg_key, msg):
         data = json.loads(msg)
         phone_a = data.get(MES_FIELD['phone_a'])
         phone_b = data.get(MES_FIELD['phone_b'])
-        log_agg = data.get(MES_FIELD['log_agg'])
-        metadata_A = data.get(MES_FIELD['meta_a'])
-        metadata_B = data.get(MES_FIELD['meta_b'])
+        log_agg = json.loads(data.get(MES_FIELD['log_agg']))
+        metadata_A = json.loads(data.get(MES_FIELD['meta_a']))
+        metadata_B = json.loads(data.get(MES_FIELD['meta_b']))
         if any(not data.get(key) for key in MES_FIELD.values()):
             logger.warning(f"Invalid message data: {msg}")
             return
