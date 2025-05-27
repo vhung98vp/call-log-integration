@@ -85,7 +85,8 @@ def build_output_message(phone_a, phone_b):
 
 def is_spam_number(phone_number, metadata):
     metadata['avg_call_per_day'] = metadata[MES_PHONE_MD['total_calls']] \
-            * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_day_from']]
+            * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_day_from']] \
+                if metadata[MES_PHONE_MD['total_day_from']] else 0
     metadata['avg_call_per_contact'] = metadata[MES_PHONE_MD['total_calls']] \
             * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_contacts']]
     metadata['total_duration'] = metadata[MES_PHONE_MD['total_calls']] * metadata[MES_PHONE_MD['call_from_rate']] \
