@@ -88,7 +88,8 @@ def is_spam_number(phone_number, metadata):
             * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_day_from']] \
                 if metadata[MES_PHONE_MD['total_day_from']] else 0
     metadata['avg_call_per_contact'] = metadata[MES_PHONE_MD['total_calls']] \
-            * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_contacts']]
+            * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_contacts']] \
+                if metadata[MES_PHONE_MD['total_contacts']] else 0
     metadata['total_duration'] = metadata[MES_PHONE_MD['total_calls']] * metadata[MES_PHONE_MD['call_from_rate']] \
             * metadata[MES_PHONE_MD['avg_duration_from']] + \
             metadata[MES_PHONE_MD['total_calls']] * (1 - metadata[MES_PHONE_MD['call_from_rate']]) \
