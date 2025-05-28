@@ -108,14 +108,14 @@ def start_kafka_consumer():
 
 def send_output_to_kafka(result: dict):
     try:
-        producer.produce(KAFKA['output_topic'], key=str(uuid.uuid4()), value=json.dumps(result))
+        producer.produce(KAFKA['output_topic'], key=str(uuid.uuid4()), value=json.dumps(result, ensure_ascii=False))
         producer.poll(0)
     except Exception as e:
         logger.error(f"Error sending result to output topic': {e}")
 
 def log_error_to_kafka(msg_key, error_info: dict):
     try:
-        producer.produce(KAFKA['error_topic'], key=msg_key, value=json.dumps(error_info))
+        producer.produce(KAFKA['error_topic'], key=msg_key, value=json.dumps(error_info, ensure_ascii=False))
         producer.flush()
     except Exception as e:
         logger.exception(f"Error sending to error topic: {e}")
