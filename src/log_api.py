@@ -26,7 +26,7 @@ def query_log_api(phone_a, phone_b):
         return agg_logs(old_logs)
     except Exception as e:
         logger.error(f"Failed to fetch from Log API: {e}")
-        return None
+        raise e
 
 def agg_logs(logs):
     unique_logs = {log[LOG_PROPERTY['start_time']]: log for log in logs}.values()
