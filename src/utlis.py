@@ -3,11 +3,11 @@ from .config import logger, RL_THRESHOLDS, ES_RL_PROPERTY, ES_PHONE_PROPERTY, \
     ES_RL_CONF, MES_PHONE_AGG, MES_PHONE_MD, SPAM_THRESHOLDS, SERVICE_THRESHOLDS
 
 
-def build_phone_uid(phone_number):
-    return str(uuid.uuid5(uuid.NAMESPACE_DNS, phone_number))
+def build_phone_uid(phone_number, entity_type=ES_RL_CONF['entity_type'], namespace=ES_RL_CONF['uid_namespace']):
+    return str(uuid.uuid5(namespace, f"{entity_type}:{phone_number}"))
 
-def build_relation_id(phone_a, phone_b, relation_type=ES_RL_CONF['relation_type']):
-    return str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{relation_type}:{phone_a}:{phone_b}"))
+def build_relation_id(phone_a, phone_b, relation_type=ES_RL_CONF['relation_type'], namespace=ES_RL_CONF['uid_namespace']):
+    return str(uuid.uuid5(namespace, f"{relation_type}:{phone_a}:{phone_b}"))
 
 
 def check_relation_by_agg(log_agg):

@@ -1,6 +1,7 @@
 import os
 import logging
 import json
+from uuid import UUID
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -39,6 +40,7 @@ ES = {
 }
 
 ES_RL_CONF = {
+    'uid_namespace': UUID(os.environ.get('ES_UUID_NAMESPACE')),
     'relation_type': os.environ.get('ES_RELATION_TYPE'),
     'entity_type': os.environ.get('ES_ENTITY_TYPE'),
     'source': int(os.environ.get('ES_ENTITY_SOURCE')),
