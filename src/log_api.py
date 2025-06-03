@@ -21,7 +21,7 @@ def query_log_api(phone_a, phone_b):
                                     headers=headers,
                                     params=params)
         response.raise_for_status()
-        old_logs = response.json().get('data', [])
+        old_logs = response.json().get('data', []) if response.json() else []
         logger.info(f"{phone_a}-{phone_b}: Received {len(old_logs)} call logs from API.")
         return agg_logs(old_logs)
     except Exception as e:
