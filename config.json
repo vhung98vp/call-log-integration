@@ -2,6 +2,7 @@
     "es_properties": {
         "suffix_pattern": "(_s_srcha|_dt_srcha|_d_srcha|_l_srcha)$",
         "phone_number_search": "phoneNumber_s_srcha",
+        "phone_id": "id",
         "relation_id_search": "relation_id"
     },
     "es_relation_properties": {
