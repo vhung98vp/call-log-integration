@@ -1,7 +1,7 @@
 import requests
 import re
 from .config import ES, ES_PROPERTY, ES_PHONE_PROPERTY, logger
-from .utlis import build_relation_id
+from .utlis import build_relation_id, build_phone_uid
 
 
 def query_relation(phone_a, phone_b):
@@ -30,13 +30,16 @@ def query_relation(phone_a, phone_b):
         return None
 
 def query_phone_entity(phone_a, phone_b):
+    uid_a = build_phone_uid(phone_a)
+    uid_b = build_phone_uid(phone_b)
     url = f"{ES['url']}/{ES['phone_index']}/_search"
     auth = (ES['user'], ES['password']) if ES['user'] and ES['password'] else None
     headers = {'Content-Type': 'application/json'}
     query = {
         "query": {
             "terms": {
-                f"properties.{ES_PROPERTY['phone_number_search']}.keyword": [phone_a, phone_b]
+                # f"properties.{ES_PROPERTY['phone_number_search']}.keyword": [phone_a, phone_b]
+                ES_PROPERTY['phone_id']: [uid_a, uid_b]
             }
         }
     }

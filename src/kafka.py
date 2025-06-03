@@ -67,6 +67,7 @@ def process_message(msg_key, msg):
             "error": str(e), 
             "message": msg 
         })
+        raise e
     finally:
         logger.info(f"Processed message in {time.time() - start_time:.4f} seconds")
 
@@ -97,7 +98,6 @@ def start_kafka_consumer():
                 consumer.commit(asynchronous=False)
                 processed_count += 1
             except Exception as e:
-                logger.exception(f"Failed to process message: {e}")
                 error_count += 1
     except Exception as e:
         logger.exception(f"Consumer process terminated: {e}")

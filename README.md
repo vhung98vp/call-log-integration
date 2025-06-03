@@ -20,6 +20,7 @@ This project is designed to check call log and integrate relation data into the 
 - `ES_PASSWORD`: Elasticsearch password
 - `ES_PHONE_INDEX`: Name of the Elasticsearch index for phone profile
 - `ES_RELATION_INDEX`: Name of the Elasticsearch index for relations
+- `ES_UUID_NAMESPACE`: UUID Namespace to gen entity UUID
 - `ES_RELATION_TYPE`: Relation type between 2 numbers of Elasticsearch
 - `ES_ENTITY_TYPE`: Entity type of phone in Elasticsearch
 - `ES_ENTITY_SOURCE`: Entity source id of phone in Elasticsearch
