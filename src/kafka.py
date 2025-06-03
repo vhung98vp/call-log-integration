@@ -34,10 +34,10 @@ def process_message(msg_key, msg):
         if is_spam_number(phone_a, metadata_A) or is_spam_number(phone_b, metadata_B):
             return
 
-        current_relation = query_relation(phone_a, phone_b)
-        if current_relation:
-            logger.info(f"Found relation from Elasticsearch for {phone_a}-{phone_b}")
-            return
+        # current_relation = query_relation(phone_a, phone_b)
+        # if current_relation:
+        #     logger.info(f"Found relation from Elasticsearch for {phone_a}-{phone_b}")
+        #     return
         
         if check_relation_by_agg(log_agg):
             logger.info(f"Relation detected for {phone_a}-{phone_b} by agg data")
