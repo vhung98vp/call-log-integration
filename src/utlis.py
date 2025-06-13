@@ -62,40 +62,41 @@ def build_output_message(phone_a, phone_b):
     }
 
 
-def is_spam_number(phone_number, metadata):
-    metadata['avg_call_per_day'] = metadata[MES_PHONE_MD['total_calls']] \
-            * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_day_from']] \
-                if metadata[MES_PHONE_MD['total_day_from']] else 0
-    metadata['avg_call_per_contact'] = metadata[MES_PHONE_MD['total_calls']] \
-            * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_contacts']] \
-                if metadata[MES_PHONE_MD['total_contacts']] else 0
-    metadata['total_duration'] = metadata[MES_PHONE_MD['total_calls']] * metadata[MES_PHONE_MD['call_from_rate']] \
-            * metadata[MES_PHONE_MD['avg_duration_from']] + \
-            metadata[MES_PHONE_MD['total_calls']] * (1 - metadata[MES_PHONE_MD['call_from_rate']]) \
-            * metadata[MES_PHONE_MD['avg_duration_to']]
+def is_spam_number(phone_number, meta_list):
+    for metadata in meta_list:
+        metadata['avg_call_per_day'] = metadata[MES_PHONE_MD['total_calls']] \
+                * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_day_from']] \
+                    if metadata[MES_PHONE_MD['total_day_from']] else 0
+        metadata['avg_call_per_contact'] = metadata[MES_PHONE_MD['total_calls']] \
+                * metadata[MES_PHONE_MD['call_from_rate']] / metadata[MES_PHONE_MD['total_contacts']] \
+                    if metadata[MES_PHONE_MD['total_contacts']] else 0
+        metadata['total_duration'] = metadata[MES_PHONE_MD['total_calls']] * metadata[MES_PHONE_MD['call_from_rate']] \
+                * metadata[MES_PHONE_MD['avg_duration_from']] + \
+                metadata[MES_PHONE_MD['total_calls']] * (1 - metadata[MES_PHONE_MD['call_from_rate']]) \
+                * metadata[MES_PHONE_MD['avg_duration_to']]
 
-    # Spam detection with extreme values
-    if metadata['avg_call_per_day'] > SPAM_THRESHOLDS['extreme_avg_call_per_day'] or \
-        metadata['total_duration'] > SPAM_THRESHOLDS['extreme_total_duration']:
-        logger.info(f"Spam number detected by filter 1: {phone_number}")
-        return True
-    
-    # Spam detection
-    if metadata['avg_call_per_day'] > SPAM_THRESHOLDS['avg_call_per_day'] and \
-        metadata[MES_PHONE_MD['total_contacts']] > SPAM_THRESHOLDS['total_contacts'] and \
-        metadata['avg_call_per_contact'] < SPAM_THRESHOLDS['avg_call_per_contact'] and \
-        metadata[MES_PHONE_MD['call_from_rate']] > SPAM_THRESHOLDS['call_from_rate'] and \
-        metadata[MES_PHONE_MD['avg_duration_from']] < SPAM_THRESHOLDS['avg_duration']:
-        logger.info(f"Spam number detected by filter 2: {phone_number}")
-        return True
+        # Spam detection with extreme values
+        if metadata['avg_call_per_day'] > SPAM_THRESHOLDS['extreme_avg_call_per_day'] or \
+            metadata['total_duration'] > SPAM_THRESHOLDS['extreme_total_duration']:
+            logger.info(f"Spam number detected by filter 1: {phone_number}")
+            return True
+        
+        # Spam detection
+        if metadata['avg_call_per_day'] > SPAM_THRESHOLDS['avg_call_per_day'] and \
+            metadata[MES_PHONE_MD['total_contacts']] > SPAM_THRESHOLDS['total_contacts'] and \
+            metadata['avg_call_per_contact'] < SPAM_THRESHOLDS['avg_call_per_contact'] and \
+            metadata[MES_PHONE_MD['call_from_rate']] > SPAM_THRESHOLDS['call_from_rate'] and \
+            metadata[MES_PHONE_MD['avg_duration_from']] < SPAM_THRESHOLDS['avg_duration']:
+            logger.info(f"Spam number detected by filter 2: {phone_number}")
+            return True
 
-    # Service detection
-    if metadata['avg_call_per_day'] > SERVICE_THRESHOLDS['avg_call_per_day'] and \
-        metadata[MES_PHONE_MD['total_day_from']] > SERVICE_THRESHOLDS['total_day_from'] and \
-        metadata[MES_PHONE_MD['total_contacts']] > SERVICE_THRESHOLDS['total_contacts'] and \
-        metadata[MES_PHONE_MD['call_from_rate']] > SERVICE_THRESHOLDS['call_from_rate'] and \
-        metadata[MES_PHONE_MD['avg_duration_from']] < SERVICE_THRESHOLDS['avg_duration']:
-        logger.info(f"Service number detected by filter: {phone_number}")
-        return True
+        # Service detection
+        if metadata['avg_call_per_day'] > SERVICE_THRESHOLDS['avg_call_per_day'] and \
+            metadata[MES_PHONE_MD['total_day_from']] > SERVICE_THRESHOLDS['total_day_from'] and \
+            metadata[MES_PHONE_MD['total_contacts']] > SERVICE_THRESHOLDS['total_contacts'] and \
+            metadata[MES_PHONE_MD['call_from_rate']] > SERVICE_THRESHOLDS['call_from_rate'] and \
+            metadata[MES_PHONE_MD['avg_duration_from']] < SERVICE_THRESHOLDS['avg_duration']:
+            logger.info(f"Service number detected by filter: {phone_number}")
+            return True
 
     return False
