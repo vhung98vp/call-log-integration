@@ -23,8 +23,6 @@ def process_message(msg_key, msg):
             logger.error(f"Invalid message data: {msg}")
             raise e
 
-        logger.info(f"Processing Kafka message for {phone_a}-{phone_b}...")
-
         if is_spam_number(phone_a, metadata_A):
             return
         
@@ -48,7 +46,7 @@ def process_message(msg_key, msg):
         })
         raise e
     finally:
-        logger.info(f"Processed message in {time.time() - start_time:.4f} seconds")
+        logger.info(f"Processed message {msg_key} in {time.time() - start_time:.4f} seconds")
 
 
 def start_kafka_consumer():
