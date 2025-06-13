@@ -99,9 +99,9 @@ with open("config.json", "r") as f:
 
 if not KAFKA['brokers']:
     raise ValueError("KAFKA_BOOTSTRAP_SERVERS environment variable is not set. Please set it to the Kafka brokers address.")
-if not ES['url']:
-    raise ValueError("ES_URL environment variable is not set. Please set it to the Elasticsearch URL.")
+# if not ES['url']:
+#     raise ValueError("ES_URL environment variable is not set. Please set it to the Elasticsearch URL.")
 # if not CLICKHOUSE['url']:
 #     raise ValueError("CLICKHOUSE_URL environment variable is not set. Please set it to the ClickHouse URL.")
-if not LOG_API['url']:
-    raise ValueError("LOG_API_URL environment variable is not set. Please set it to the Log API URL.")
+# if not LOG_API['url']:
+#     raise ValueError("LOG_API_URL environment variable is not set. Please set it to the Log API URL.")

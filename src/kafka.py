@@ -1,19 +1,13 @@
 import json
 import uuid
 import time
-# from concurrent.futures import ThreadPoolExecutor
 from confluent_kafka import Consumer, Producer
-from .elasticsearch import query_phone_entity, query_relation
-# from .clickhouse import query_clickhouse
-from .log_api import query_log_api
-from .utlis import check_relation_by_agg, check_relation_by_agg_metadata, check_relation_by_old_logs, build_output_message, is_spam_number
+from .utlis import check_relation_by_agg, check_relation_by_agg_metadata, build_output_message, is_spam_number
 from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MES_FIELD
 
 producer = Producer(KAFKA_PRODUCER_CONFIG)
 consumer = Consumer(KAFKA_CONSUMER_CONFIG)
 consumer.subscribe([KAFKA['input_topic']])
-
-# executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 
 def process_message(msg_key, msg):
@@ -22,42 +16,25 @@ def process_message(msg_key, msg):
         data = json.loads(msg)
         phone_a = data.get(MES_FIELD['phone_a'])
         phone_b = data.get(MES_FIELD['phone_b'])
-        log_agg = json.loads(data.get(MES_FIELD['log_agg']))
-        metadata_A = json.loads(data.get(MES_FIELD['meta_a']))
-        metadata_B = json.loads(data.get(MES_FIELD['meta_b']))
-        if any(not data.get(key) for key in MES_FIELD.values()):
-            logger.warning(f"Invalid message data: {msg}")
+        log_agg = [json.loads(log_agg) for log_agg in data.get(MES_FIELD['log_agg'], [])]
+        metadata_A = [json.loads(meta) for meta in data.get(MES_FIELD['meta_a'], [])]
+        # metadata_B = json.loads(data.get(MES_FIELD['meta_b']))
+        if any(not item for item in [phone_a, phone_b, log_agg, metadata_A]):
+            logger.error(f"Invalid message data: {msg}")
+            raise e
+
+        if is_spam_number(phone_a, metadata_A):
             return
-
-        logger.info(f"Processing Kafka message for {phone_a}-{phone_b}...")
-
-        if is_spam_number(phone_a, metadata_A) or is_spam_number(phone_b, metadata_B):
-            return
-
-        # current_relation = query_relation(phone_a, phone_b)
-        # if current_relation:
-        #     logger.info(f"Found relation from Elasticsearch for {phone_a}-{phone_b}")
-        #     return
         
         if check_relation_by_agg(log_agg):
             logger.info(f"Relation detected for {phone_a}-{phone_b} by agg data")
             send_output_to_kafka(build_output_message(phone_a, phone_b))
             return
 
-        if check_relation_by_agg_metadata(log_agg, metadata_A, metadata_B):
+        if check_relation_by_agg_metadata(log_agg, metadata_A):
             logger.info(f"Relation detected for {phone_a}-{phone_b} by agg and metadata")
             send_output_to_kafka(build_output_message(phone_a, phone_b))
             return
-        
-        # Check old logs in ClickHouse
-        old_logs_agg = query_log_api(phone_a, phone_b)
-        if old_logs_agg:
-            logger.info(f"Found old logs for {phone_a}-{phone_b}. Checking...")
-            meta_A, meta_B = query_phone_entity(phone_a, phone_b)
-            if check_relation_by_old_logs(log_agg, old_logs_agg, meta_A, meta_B):
-                logger.info(f"Relation detected for {phone_a}-{phone_b} by old data")    
-                send_output_to_kafka(build_output_message(phone_a, phone_b))
-                return
 
         logger.info(f"Relation not detected for {phone_a}-{phone_b}.")
 
@@ -69,7 +46,7 @@ def process_message(msg_key, msg):
         })
         raise e
     finally:
-        logger.info(f"Processed message in {time.time() - start_time:.4f} seconds")
+        logger.info(f"Processed message {msg_key} in {time.time() - start_time:.4f} seconds")
 
 
 def start_kafka_consumer():
@@ -93,7 +70,6 @@ def start_kafka_consumer():
                 message_key = msg.key().decode("utf-8") if msg.key() else None
                 if not message_key:
                     logger.warning(f"Received message without key: {message}")
-                # executor.submit(process_message, message_key, message)
                 process_message(message_key, message)
                 consumer.commit(asynchronous=False)
                 processed_count += 1

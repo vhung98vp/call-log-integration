@@ -1,6 +1,6 @@
 {
     "es_properties": {
-        "suffix_pattern": "(_s_srcha|_dt_srcha|_d_srcha|_l_srcha)$",
+        "suffix_pattern": "(_s_srcha|_s_unsrcha|_dt_srcha|_dt_unsrcha|_d_srcha|_l_srcha)$",
         "phone_number_search": "phoneNumber_s_srcha",
         "phone_id": "id",
         "relation_id_search": "relation_id"
@@ -33,15 +33,15 @@
         "meta_b": "metaB"
     },
     "message_phone_metadata": {
-        "total_calls": "monthlyTotalCalls",
-        "call_from_rate": "monthlyCallFromRate",
-        "business_call_rate": "monthlyBusinessCallRate",
-        "avg_duration_from": "monthlyAvgDurationFrom",
-        "avg_duration_to": "monthlyAvgDurationTo",
-        "total_weekend_calls": "monthlyTotalWeekendCalls",
-        "total_night_calls": "monthlyTotalNightCalls",
-        "total_day_from": "monthlyTotalDayFrom",
-        "total_contacts": "monthlyTotalContacts"
+        "total_calls": "TotalCalls",
+        "call_from_rate": "CallFromRate",
+        "business_call_rate": "BusinessCallRate",
+        "avg_duration_from": "AvgDurationFrom",
+        "avg_duration_to": "AvgDurationTo",
+        "total_weekend_calls": "TotalWeekendCalls",
+        "total_night_calls": "TotalNightCalls",
+        "total_day_from": "TotalDayFrom",
+        "total_contacts": "TotalContacts"
     },
     "message_phone_agg": {
         "total_calls": "totalCalls",
