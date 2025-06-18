@@ -2,7 +2,7 @@ import json
 import uuid
 import time
 from confluent_kafka import Consumer, Producer
-from .utlis import check_relation_by_agg, check_relation_by_agg_metadata, build_output_message, is_spam_number
+from .utils import check_relation_by_agg, check_relation_by_agg_metadata, build_output_message, is_spam_number
 from .config import logger, KAFKA, KAFKA_CONSUMER_CONFIG, KAFKA_PRODUCER_CONFIG, MES_FIELD
 
 producer = Producer(KAFKA_PRODUCER_CONFIG)

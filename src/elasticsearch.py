@@ -1,7 +1,7 @@
 import requests
 import re
 from .config import ES, ES_PROPERTY, ES_PHONE_PROPERTY, logger
-from .utlis import build_relation_id, build_phone_uid
+from .utils import build_relation_id, build_phone_uid
 
 
 def query_relation(phone_a, phone_b):
