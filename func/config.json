@@ -1,0 +1,36 @@
+{
+    "es_relation_properties": {
+        "relation_type": "relationType",
+        "relation_id": "relationId",
+        "from_entity": "fromEntity",
+        "to_entity": "toEntity",
+        "from_entity_type": "fromEntityType",
+        "to_entity_type": "toEntityType",
+        "from_source": "fromSource",
+        "to_source": "toSource",
+        "from_datasource": "fromDataSource",
+        "to_datasource": "toDataSource",
+        "create_user": "createUser"
+    },
+    "message_phone_metadata": {
+        "total_calls": "TotalCalls",
+        "call_from_rate": "CallFromRate",
+        "business_call_rate": "BusinessCallRate",
+        "avg_duration_from": "AvgDurationFrom",
+        "avg_duration_to": "AvgDurationTo",
+        "total_weekend_calls": "TotalWeekendCalls",
+        "total_night_calls": "TotalNightCalls",
+        "total_day_from": "TotalDayFrom",
+        "total_contacts": "TotalContacts"
+    },
+    "message_phone_agg": {
+        "total_calls": "totalCalls",
+        "call_from_rate": "callFromRate",
+        "max_duration": "maxDuration",
+        "total_duration": "totalDuration",
+        "avg_days": "avgDays",
+        "total_business_calls": "totalBusinessCalls",
+        "total_weekend_calls": "totalWeekendCalls",
+        "total_night_calls": "totalNightCalls"
+    }
+}
